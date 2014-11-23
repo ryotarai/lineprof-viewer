@@ -85,6 +85,31 @@ RSpec.describe ProfilesController, :type => :controller do
         post :create, {:profile => valid_attributes}, valid_session
         expect(response).to redirect_to(Profile.last)
       end
+
+      it "creates a new Profile" do
+        post :create, {:profile => JSON.parse(File.read(Rails.root.join('spec/fixtures/profile.json')))}
+        profile = Profile.last
+        expect(profile.root_path).to eq('/Users/ryota-arai/working/lineprof-sample')
+        expect(profile.tags.first.key).to eq('revision')
+        expect(profile.tags.first.value).to eq('e900b548823d3abc7d025bed4a5bcae4b9b380a3')
+        expect(profile.files.size).to eq(6)
+
+        file = profile.files.first
+        expect(file.path).to eq('/Users/ryota-arai/working/lineprof-sample/config/initializers/lineprof.rb')
+        expect(file.total_wall_time).to eq(53051)
+        expect(file.child_wall_time).to eq(11039)
+        expect(file.exclusive_wall_time).to eq(41728)
+        expect(file.total_cpu_time).to eq(41009)
+        expect(file.child_cpu_time).to eq(8412)
+        expect(file.exclusive_cpu_time).to eq(32323)
+        expect(file.allocations).to eq(9912)
+
+        record = profile.files.first.records.where(line: 15).first
+        expect(record.wall).to eq(53051)
+        expect(record.cpu).to eq(41009)
+        expect(record.calls).to eq(1)
+        expect(record.allocations).to eq(9912)
+      end
     end
 
     describe "with invalid params" do
@@ -157,3 +182,4 @@ RSpec.describe ProfilesController, :type => :controller do
   end
 
 end
+
