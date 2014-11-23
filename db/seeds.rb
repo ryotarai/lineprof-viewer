@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Profile.new_from_fluentd_record(
+  JSON.parse(File.read(Rails.root.join('spec/fixtures/profile.json')))).save!
