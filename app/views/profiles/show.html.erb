@@ -1,4 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<ul>
+<% @profile.files.each do |file| %>
+<li><%= link_to file.relative_path.to_s, profiled_file_path(file) %></li>
+<% end %>
+</ul>
+
 <%= link_to 'Edit', edit_profile_path(@profile) %> |
 <%= link_to 'Back', profiles_path %>

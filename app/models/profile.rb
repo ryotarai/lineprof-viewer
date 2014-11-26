@@ -40,4 +40,14 @@ class Profile < ActiveRecord::Base
 
     profile
   end
+
+  def tag_value(key)
+    tag = tags.where(key: key).first
+
+    if tag
+      tag.value
+    else
+      nil
+    end
+  end
 end

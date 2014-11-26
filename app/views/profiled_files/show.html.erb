@@ -1,0 +1,20 @@
+<table>
+<tr>
+  <th>calls</th>
+  <th>wall</th>
+  <th>cpu</th>
+  <th>alloc</th>
+</tr>
+<% @profiled_file.records.order(:line).each do |record| %>
+<% break unless record.source %>
+<tr>
+  <td><%= record.calls %></td>
+  <td><%= record.wall %></td>
+  <td><%= record.cpu %></td>
+  <td><%= record.allocations %></td>
+  <td style="background-color: #ff0000;">
+    <pre style="margin: 0px; padding: 0px; background-color: transparent;"><%= record.source %></pre>
+  </td>
+</tr>
+<% end %>
+</table>
